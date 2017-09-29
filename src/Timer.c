@@ -5,8 +5,8 @@
  * From there, need to create the events for the prescale
 */
 void Timer_Init( void ) {
-    GPIOA->AFR[0] |= 0x1;                   // set alternate function for PA0; using AF1 (TIM2_CH1)
-    RCC->APB1ENR1 |= RCC_APB1ENR1_TIM2EN;   // TIM2 timer clock enable
+    GPIOA->AFR[0] |= 0x8;                   // set alternate function for PA8; using AF1 (TIM1_CH1)
+    RCC->APB2ENR |= RCC_APB2ENR_TIM1EN;     // TIM1 timer clock enable
     TIM2->PSC = SYSTEM_CLK;                 // prescale the system clock
     TIM2->EGR |= TIM_EGR_UG;                // set the update generation bit; see RM for more info, but forces an update of the register
     TIM2->CCER &= ~(0xFFFFFFFF);            // hold off on getting inputs until we're ready for them
