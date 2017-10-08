@@ -30,11 +30,45 @@ void vector_append_int(Vector *vector, int value){
     vector->data[vector->size++] = value;
 }
 
+void vector_append_double(Vector *vector, double value){
+    // make sure there's room to expand
+    vector_double_capacity_if_full(vector, sizeof(double));
+    
+    // append the value and increment the vector size
+    vector->data[vector->size++] = value;
+}
+
+void vector_append_char(Vector *vector, char value){
+    // make sure there's room to expand
+    vector_double_capacity_if_full(vector, sizeof(char));
+    
+    // append the value and increment the vector size
+    vector->data[vector->size++] = value;
+}
+
 /*
  * Gets the item in the vector at the specified index.  Seperate functions for getting an int, double,
  * or char item.  Notifies and exits if the index is out of bounds.
 */
 int vector_get_int(Vector *vector, int index){
+    if(index >= vector->size || index < 0){
+        printf("Index %d out of bounds for vector of size %d\n", index, vector->size);
+        exit(1);
+    }
+    
+    return vector->data[index];
+}
+
+double vector_get_double(Vector *vector, int index){
+    if(index >= vector->size || index < 0){
+        printf("Index %d out of bounds for vector of size %d\n", index, vector->size);
+        exit(1);
+    }
+    
+    return vector->data[index];
+}
+
+char vector_get_char(Vector *vector, int index){
     if(index >= vector->size || index < 0){
         printf("Index %d out of bounds for vector of size %d\n", index, vector->size);
         exit(1);
@@ -57,6 +91,24 @@ void vector_set_int(Vector *vector, int index, int value){
     vector->data[index] = value;
 }
 
+void vector_set_double(Vector *vector, int index, double value){
+    // if the desired slot is out of range, then appends 0s until filled
+    // to the desired index
+    while(index >= vector->size){
+        vector_append_double(vector, 0);
+    }
+    
+    vector->data[index] = value;
+}
+void vector_set_char(Vector *vector, int index, char value){
+    // if the desired slot is out of range, then appends 0s until filled
+    // to the desired index
+    while(index >= vector->size){
+        vector_append_char(vector, 0);
+    }
+    
+    vector->data[index] = value;
+}
 /*
  * Doubles vector capcity if it's full.  Checks if the current vector size is greater than or equal to
  * the vector capacity, and if so, doubles the capacity and reallocs the memory
