@@ -13,7 +13,8 @@ void Timer_Init( void ) {
 
     TIM2->CCMR1 |= 0x68;                    // setup channel for input and output compare 1 preload, enable PWN mode 1
 		TIM2->CR1 |= 0x80;											// Enable auto-reload preload enable
-		TIM2->CCER |= 0x01;											// enable channel 1 output bit 
+		TIM2->CCER |= 0x01;											// enable channel 1 output bit
+		TIM2->ARR |= 0x14;
 	
     TIM2->EGR |= TIM_EGR_UG;								// set the update generation bit; see RM for more info, but forces an update of the register
 
