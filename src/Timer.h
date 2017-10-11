@@ -14,10 +14,9 @@ void Timer_Init( void ) ;
 
 void Start_Timer( void ) ;
 
-unsigned int Get_Timer( void ) ;
-
 void Stop_Timer( void ) ;
 
-int Event_Captured( void ) ;
+void Change_Pulse( int width ) ;
+
 
 #endif /* TIMER_H */
