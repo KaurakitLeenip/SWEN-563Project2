@@ -1,14 +1,13 @@
 #include "stm32l476xx.h"
 #include "SysClock.h"
-#include "LED.h"
 #include "UART.h"
 #include "Util.h"
-#include "Histogram.h"
+#include "Timer.h"
+#include "LED.h"
 
 #include <string.h>
 #include <stdio.h>
 
-#define MAX_BUCKETS (101)
 #define ENTER_ASCII (13)
 
 char RxComByte = 0;
@@ -17,28 +16,33 @@ uint8_t buffer[BufferSize];
 char * strRead = "";
 
 int main(void){
-
-	int POST_result;
+	
+	int us = 100000;
+	int delay = 100*us/7;
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   ALWAYS MAKE SURE TO INITIALIZE SysClock and UART FIRST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	System_Clock_Init();
-	UART2_Init();S
+	UART2_Init();
 	
-	Init_PA0();
-	POST_result = Run_POST();
-	
-	if ( POST_result == 0 ){
-		POST_result = POST_FAILED();
-	}
-	
-	if ( POST_result == 1 ){
-		Write_Line( "POST Successful. \r\n" );
-		while(1){
+	LED_Init();
+	Timer_Init();
+	//Change_Width(20);
+	//while(1){
+	Start_Timer();
+	Change_Width(4);
+	//}
+	/*while(1){
+		
+		while(delay--){
+		
+			
 			
 		}
-		
-		return 0;
-	}	
+	
+	
+		delay = 100*us/7;									//reset interrupt timer
+	}
+	*/
 }
 
 
