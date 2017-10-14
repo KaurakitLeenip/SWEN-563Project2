@@ -45,82 +45,85 @@ int main(void){
 	Start_Timer_Left();
 	Start_Timer_Right();
 	Move_Buffering(5);
+	Change_Width_Left(2000);
+	Move_Buffering(5);
 
-	for ( i = 0; i < sizeof(recipe1); i++ ){
-		
-		if ( recipe1[i] & MOV == 0x00 ){
-			
-			int pulse_width;
+
+		for ( i = 0; i < sizeof(recipe1); i++ ){
 			
 			temp = recipe1[i];
-			temp &= 0x1F;
-			value = temp;
-			pulse_width = SMALLEST_WIDTH + value*STEP_INTERVAL;
 			
-			Change_Width_Left( pulse_width );
-			if( 0 ){															//check state to calc
-					Move_Buffering(5);
+			if ( temp & MOV == MOV ){
+				
+				int pulse_width;
+				
+				temp &= 0x1F;
+				value = temp;
+				pulse_width = SMALLEST_WIDTH + value*STEP_INTERVAL;
+				
+				Change_Width_Left( pulse_width );
+				//if( 0 ){															//check state to calc
+						Move_Buffering(5);
+				//}
+			}
+			
+			else if ( temp & WAIT == WAIT ){
+				int delay;
+				temp &= 0x1F;
+				value = temp;
+
+				value++;																
+				//wait 0 is a wait of 1 cycle so the value must be adjusted
+				
+				delay = value*100000;
+				USART_Delay(delay);
+				//THIS MIGHT BE THE WRONG IMPLEMENTATION
+				
+			}
+			
+			else if ( temp & LOOP == LOOP ){
+				//save current index
+				temp &= 0x1F;
+				times_to_loop = temp;
+				start_loop_index = i;
+				start_loop_index++; 							
+				//the next statements will be looped
+				
+				if( in_loop != 0 ){
+					//NESTED_LOOP_ERROR: BOTH RED AND GREEN LEDS ON
+					
 				}
-		}
-		
-		else if ( recipe1[i] & WAIT == 0x00 ){
-			int delay;
-			temp = recipe1[i];
-			temp &= 0x1F;
-			value = temp;
-
-			value++;																
-			//wait 0 is a wait of 1 cycle so the value must be adjusted
-			
-			delay = value*100000;
-			USART_Delay(delay);
-			
-		}
-		
-		else if ( recipe1[i] & LOOP == 0x00 ){
-			//save current index
-			temp = recipe1[i];
-			temp &= 0x1F;
-			times_to_loop = temp;
-			start_loop_index = i;
-			start_loop_index++; 							
-			//the next statements will be looped
-			
-			if( in_loop != 0 ){
-				//NESTED_LOOP_ERROR: BOTH RED AND GREEEN LEDS ON
-				
-			}
-			in_loop = 1;
-		}
-		
-		else if ( recipe1[i] & END_LOOP = 0x00 ){
-			//set index to index of the loop
-			//if loop counter is = to value, dont change index
-			
-			if ( in_loop ){
-				//the recipe is bad. there is an END_LOOP before a START_LOOP
-				//RECIPE_COMMAND_ERROR
-				
+				in_loop = 1;
 			}
 			
-			if ( loop_counter == times_to_loop ){
-				in_loop = 0;
+			else if ( temp & END_LOOP == END_LOOP ){
+				//set index to index of the loop
+				//if loop counter is = to value, dont change index
+				
+				if ( in_loop ){
+					//the recipe is bad. there is an END_LOOP before a START_LOOP
+					//RECIPE_COMMAND_ERROR
+					
+				}
+				
+				if ( loop_counter == times_to_loop ){
+					//if loop_counter is equal to times_to_loop
+					//it has reached the number of times to loop
+					//turn off the in loop flag
+					in_loop = 0;
+				}
+				
+				else{
+					loop_counter++;
+					i = start_loop_index;
+				}
 			}
 			
 			else{
-				loop_counter++;
-				i = start_loop_index;
+			//it is the recipe end
+				break;
 			}
 		}
-		
-		else{
-		//it is the recipe end
-			break;
-			
-		}
-		
-		
-	}
 	
 	
 	
