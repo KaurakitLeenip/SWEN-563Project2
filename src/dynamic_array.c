@@ -10,10 +10,10 @@
 void vector_init(Vector *vector, size_t itemSize){
     // initialize size and capacity
     vector->size = 0;
-    vector->capacity = VECTOR_INITIAL_CAPACITY;
+    vector->capacity = ARRAY_INITIAL_CAPACITY;
     
     // allocate memory for vector data
-    vector->data = calloc(itemSize * vector->capacity);
+    vector->data = calloc(vector->capacity, itemSize * vector->capacity);
 }
 
 /*

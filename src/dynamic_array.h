@@ -5,19 +5,19 @@
 typedef struct {
     int size; // slots used so far
     int capacity; // total slots available
-    int *data // array of integers
-}Vector_int;
+    int *data; // array of integers
+}Vector;
 
 typedef struct {
     int size; // slots used so far
     int capacity; // total slots available
-    double *data // array of integers
+    double *data; // array of integers
 }Vector_double;
 
 typedef struct {
     int size; // slots used so far
     int capacity; // total slots available
-    char *data // array of integers
+    char *data; // array of integers
 }Vector_char;
 
 void vector_init(Vector *vector, size_t itemSize);
@@ -40,7 +40,8 @@ void vector_set_double(Vector *vector, int index, double value);
 
 void vector_set_char(Vector *vector, int index, char value);
 
-void vector_double_capacity_if_full(Vector *vector);
+void vector_double_capacity_if_full(Vector *vector, size_t itemSize);
 
 void vector_free(Vector *vector);
 
+#endif

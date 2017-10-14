@@ -1,4 +1,4 @@
-#include <stdio>
+#include <stdio.h>
 #include "state_machine.h"
 
 void *Servo_At_0(){
@@ -10,6 +10,18 @@ void *Servo_At_1(){
 }
 
 void *Servo_At_2(){
+    // some implementation
+}
+
+void *Servo_At_3(){
+    // some implementation
+}
+
+void *Servo_At_4(){
+    // some implementation
+}
+
+void *Servo_At_5(){
     // some implementation
 }
 
@@ -70,6 +82,7 @@ void *Some_Other_Other_State()
         
     }
     return nextState;
+*/
             
 /* USAGE EXAMPLE:
 
@@ -86,3 +99,4 @@ int main(){
     
     return 1; // should never get here
 }
+*/
