@@ -1,0 +1,16 @@
+.\objects\commands.o: src\commands.c
+.\objects\commands.o: src\commands.h
+.\objects\commands.o: src\Timer.h
+.\objects\commands.o: src\stm32l476xx.h
+.\objects\commands.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include\core_cm4.h
+.\objects\commands.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\commands.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include\cmsis_version.h
+.\objects\commands.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include\cmsis_compiler.h
+.\objects\commands.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include\cmsis_armcc.h
+.\objects\commands.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include\mpu_armv7.h
+.\objects\commands.o: C:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include\system_stm32l4xx.h
+.\objects\commands.o: src\SysClock.h
+.\objects\commands.o: src\Timer.h
+.\objects\commands.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\commands.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\commands.o: src\UART.h
