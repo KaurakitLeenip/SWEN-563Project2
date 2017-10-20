@@ -19,11 +19,8 @@
 #define SMALLEST_WIDTH (400)
 #define DEFAULT_STATE (3)
 
-char RxComByte = 0;
-uint8_t buffer[BufferSize];
 unsigned char recipe1[] = { MOV|3, MOV|5, RECIPE_END};
 
-char * strRead = "";
 
 int main(void){
 	
