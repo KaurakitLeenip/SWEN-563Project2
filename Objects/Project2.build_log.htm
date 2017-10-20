@@ -3,62 +3,94 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: µVision V5.21.0.0
-Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: Larry Kiser, Rochester Institute of Technology, LIC=----
+IDE-Version: µVision V5.24.2.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Kaurakit Leenip, RIT, LIC=----
  
 Tool Versions:
-Toolchain:       MDK-Lite  Version: 5.21
+Toolchain:       MDK-Lite  Version: 5.24.1
 Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.06 update 3 (build 300)
-Assembler:       Armasm.exe V5.06 update 3 (build 300)
-Linker/Locator:  ArmLink.exe V5.06 update 3 (build 300)
-Library Manager: ArmAr.exe V5.06 update 3 (build 300)
-Hex Converter:   FromElf.exe V5.06 update 3 (build 300)
-CPU DLL:         SARMCM3.DLL V5.21
-Dialog DLL:      DCM.DLL V1.13.8.0
-Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
-Dialog DLL:      TCM.DLL V1.14.14.0
+C Compiler:      Armcc.exe V5.06 update 5 (build 528)
+Assembler:       Armasm.exe V5.06 update 5 (build 528)
+Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
+Library Manager: ArmAr.exe V5.06 update 5 (build 528)
+Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
+CPU DLL:         SARMCM3.DLL V5.24.1
+Dialog DLL:      DCM.DLL V1.16.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
+Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
-Z:\swen563\Project2\Project2.uvprojx
-Project File Date:  09/25/2017
+C:\Users\SerBubblez\Documents\SWEN563\SWEN-563Project2\Project2.uvprojx
+Project File Date:  10/17/2017
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 3 (build 300)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
 assembling startup_stm32l476xx.s...
-compiling main.c...
-src\main.c(3): error:  #5: cannot open source input file "LED.h": No such file or directory
-  #include "LED.h"
-src\main.c: 0 warnings, 1 error
-compiling SysClock.c...
+compiling dynamic_array.c...
+src\dynamic_array.c(129): warning:  #1-D: last line of file ends without a newline
+  }
+src\dynamic_array.c: 1 warning, 0 errors
 compiling Timer.c...
-src\Timer.c(9): error:  #20: identifier "RCC_APB1ENR1_TIM1EN" is undefined
-      
-CC->APB1ENR1 |= RCC_APB1ENR1_TIM1EN;   // TIM2 timer clock enable
-src\Timer.c: 0 warnings, 1 error
-compiling UART.c...
 compiling Util.c...
-".\Objects\Project2.axf" - 2 Error(s), 0 Warning(s).
+compiling SysClock.c...
+compiling UART.c...
+compiling main.c...
+src\Commands.h(7): warning:  #1295-D: Deprecated declaration Turn_Left - give arg types
+  void Turn_Left();
+src\Commands.h(8): warning:  #1295-D: Deprecated declaration Turn_Right - give arg types
+  void Turn_Right();
+src\Commands.h(9): warning:  #1295-D: Deprecated declaration Pause - give arg types
+  void Pause();
+src\Commands.h(10): warning:  #1295-D: Deprecated declaration Continue - give arg types
+  void Continue();
+src\main.c(47): warning:  #223-D: function "Move_Buffering" declared implicitly
+  	Move_Buffering(5);
+src\main.c(33): warning:  #177-D: variable "width"  was declared but never referenced
+  	int width = 400;
+src\main.c: 6 warnings, 0 errors
+compiling commands.c...
+src\commands.h(7): warning:  #1295-D: Deprecated declaration Turn_Left - give arg types
+  void Turn_Left();
+src\commands.h(8): warning:  #1295-D: Deprecated declaration Turn_Right - give arg types
+  void Turn_Right();
+src\commands.h(9): warning:  #1295-D: Deprecated declaration Pause - give arg types
+  void Pause();
+src\commands.h(10): warning:  #1295-D: Deprecated declaration Continue - give arg types
+  void Continue();
+src\commands.c(33): warning:  #127-D: expected a statement
+  	}
+src\commands.c(67): warning:  #1-D: last line of file ends without a newline
+  }
+src\commands.c: 6 warnings, 0 errors
+compiling LED.c...
+linking...
+Program Size: Code=1972 RO-data=428 RW-data=8 ZI-data=1632  
+FromELF: creating hex file...
+".\Objects\Project2.axf" - 0 Error(s), 13 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.4.5.0.pack
-                ARM::CMSIS:CORE:4.3.0
+                http://www.keil.com/pack/ARM.CMSIS.5.1.1.pack
+                ARM.CMSIS.5.1.1
                 CMSIS (Cortex Microcontroller Software Interface Standard)
-   * Component: CORE Version: 4.3.0
+   * Component: CORE Version: 5.0.2
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32L4xx_DFP.2.0.0.pack
+                Keil.STM32L4xx_DFP.2.0.0
+                STMicroelectronics STM32L4 Series Device Support, Drivers and Examples
 
 <h2>Collection of Component include folders:</h2>
-  Z:\swen563\Project2\RTE
-  C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
-  C:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\1.2.0\Device\Include
+  .\RTE\_Target_1
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.1.1\CMSIS\Include
+  C:\Keil_v5\ARM\PACK\Keil\STM32L4xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32L4xx\Include
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ARM::CMSIS:CORE:4.3.0
-Target not created.
+   * Component: ARM::CMSIS:CORE:5.0.2
 Build Time Elapsed:  00:00:02
 </pre>
 </body>
