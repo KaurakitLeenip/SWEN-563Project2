@@ -22,93 +22,25 @@ Dialog DLL:      TCM.DLL V1.14.14.0
  
 <h2>Project:</h2>
 Z:\swen563\Project2\Project2.uvprojx
-Project File Date:  10/13/2017
+Project File Date:  09/25/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 3 (build 300)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
 assembling startup_stm32l476xx.s...
-compiling SysClock.c...
 compiling main.c...
-src\Commands.h(7): warning:  #1295-D: Deprecated declaration Turn_Left - give arg types
-  void Turn_Left();
-src\Commands.h(8): warning:  #1295-D: Deprecated declaration Turn_Right - give arg types
-  void Turn_Right();
-src\Commands.h(9): warning:  #1295-D: Deprecated declaration Pause - give arg types
-  void Pause();
-src\Commands.h(10): warning:  #1295-D: Deprecated declaration Continue - give arg types
-  void Continue();
-src\main.c(47): warning:  #223-D: function "Move_Buffering" declared implicitly
-  	Move_Buffering(5);
-src\main.c(33): warning:  #177-D: variable "width" was declared but never referenced
-  	int width = 400;
-src\main.c: 6 warnings, 0 errors
+src\main.c(3): error:  #5: cannot open source input file "LED.h": No such file or directory
+  #include "LED.h"
+src\main.c: 0 warnings, 1 error
+compiling SysClock.c...
 compiling Timer.c...
-compiling dynamic_array.c...
-src\dynamic_array.c(129): warning:  #1-D: last line of file ends without a newline
-  }
-src\dynamic_array.c: 1 warning, 0 errors
-compiling state_machine.c...
-src\state_machine.h(15): warning:  #1295-D: Deprecated declaration Servo_At_0 - give arg types
-  void *Servo_At_0();
-src\state_machine.h(16): warning:  #1295-D: Deprecated declaration Servo_At_1 - give arg types
-  void *Servo_At_1();
-src\state_machine.h(17): warning:  #1295-D: Deprecated declaration Servo_At_2 - give arg types
-  void *Servo_At_2();
-src\state_machine.h(18): warning:  #1295-D: Deprecated declaration Servo_Init - give arg types
-  void *Servo_Init();
-src\state_machine.h(19): warning:  #1295-D: Deprecated declaration Servo_Unknown - give arg types
-  void *Servo_Unknown();
-src\state_machine.h(22): warning:  #1295-D: Deprecated declaration Post_State - give arg types
-  void *Post_State();
-src\state_machine.h(23): warning:  #1295-D: Deprecated declaration Running_State - give arg types
-  void *Running_State();
-src\state_machine.h(25): warning:  #1-D: last line of file ends without a newline
-  #endif
-src\state_machine.c(6): warning:  #940-D: missing return statement at end of non-void function "Servo_At_0"
-  }
-src\state_machine.c(10): warning:  #940-D: missing return statement at end of non-void function "Servo_At_1"
-  }
-src\state_machine.c(14): warning:  #940-D: missing return statement at end of non-void function "Servo_At_2"
-  }
-src\state_machine.c(18): warning:  #940-D: missing return statement at end of non-void function "Servo_At_3"
-  }
-src\state_machine.c(22): warning:  #940-D: missing return statement at end of non-void function "Servo_At_4"
-  }
-src\state_machine.c(26): warning:  #940-D: missing return statement at end of non-void function "Servo_At_5"
-  }
-src\state_machine.c(30): warning:  #940-D: missing return statement at end of non-void function "Servo_Unknown"
-  }
-src\state_machine.c(34): warning:  #940-D: missing return statement at end of non-void function "Servo_Init"
-  }
-src\state_machine.c(38): warning:  #940-D: missing return statement at end of non-void function "Post_State"
-  }
-src\state_machine.c(42): warning:  #940-D: missing return statement at end of non-void function "Running_State"
-  }
-src\state_machine.c(102): warning:  #1-D: last line of file ends without a newline
-  */
-src\state_machine.c: 19 warnings, 0 errors
+src\Timer.c(9): error:  #20: identifier "RCC_APB1ENR1_TIM1EN" is undefined
+      
+CC->APB1ENR1 |= RCC_APB1ENR1_TIM1EN;   // TIM2 timer clock enable
+src\Timer.c: 0 warnings, 1 error
 compiling UART.c...
 compiling Util.c...
-compiling Commands.c...
-src\commands.h(7): warning:  #1295-D: Deprecated declaration Turn_Left - give arg types
-  void Turn_Left();
-src\commands.h(8): warning:  #1295-D: Deprecated declaration Turn_Right - give arg types
-  void Turn_Right();
-src\commands.h(9): warning:  #1295-D: Deprecated declaration Pause - give arg types
-  void Pause();
-src\commands.h(10): warning:  #1295-D: Deprecated declaration Continue - give arg types
-  void Continue();
-src\Commands.c(33): warning:  #127-D: expected a statement
-  	}
-src\Commands.c(67): warning:  #1-D: last line of file ends without a newline
-  }
-src\Commands.c: 6 warnings, 0 errors
-compiling LED.c...
-linking...
-Program Size: Code=1972 RO-data=428 RW-data=8 ZI-data=1632  
-FromELF: creating hex file...
-".\Objects\Project2.axf" - 0 Error(s), 32 Warning(s).
+".\Objects\Project2.axf" - 2 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -126,7 +58,8 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:4.3.0
-Build Time Elapsed:  00:00:03
+Target not created.
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

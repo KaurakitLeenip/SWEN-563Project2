@@ -1,46 +1,43 @@
-#include <stdio.h>
+/**#include <stdio.h>
 #include "state_machine.h"
 
-void *Servo_At_0(){
-    // some implementation
-}
+int override_flag = 0;
+char line[256];
 
-void *Servo_At_1(){
-    // some implementation
-}
+typedef struct servo_info{
+	
+	enum status servo_status;
+	enum servo_states servo_state;
+	
+	int current_index;
+	int loop_start_index;
+	int loop_counter;
+	int servo_position_number;
+	
+}	servo;
 
-void *Servo_At_2(){
-    // some implementation
-}
+enum status 
+{
+	status_input_checked,
+	status_input_read,
+	status_running,
+	status_paused,
+	status_command_error,
+	status_nested_error
+} ;
 
-void *Servo_At_3(){
-    // some implementation
-}
+// This is a good way to define the state of a servo motor.
+// This should be in a header (.h) file.
+enum servo_states
+{
+	state_stopped,
+	state_moving,
+	status_recipe_ended		
+	
+} ;
 
-void *Servo_At_4(){
-    // some implementation
-}
 
-void *Servo_At_5(){
-    // some implementation
-}
-
-void *Servo_Unknown(){
-    // some implementation
-}
-
-void *Servo_Init(){
-    // some implementation
-}
-
-void *Post_State(){
-    // some implementation
-}
-
-void *Running_State(){
-    // some implementation
-}
-
+**/
 /* STATE IMPLEMENTATION EXAMPLE
 
 void *Some_State(){

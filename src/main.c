@@ -15,14 +15,12 @@
 #define LOOP (0x80)
 #define END_LOOP (0xA0)
 #define RECIPE_END (0)
-#define STEP_INTERVAL (267)
+#define STEP_INTERVAL (320)
 #define SMALLEST_WIDTH (400)
+#define DEFAULT_STATE (3)
 
-char RxComByte = 0;
-uint8_t buffer[BufferSize];
 unsigned char recipe1[] = { MOV|3, MOV|5, RECIPE_END};
 
-char * strRead = "";
 
 int main(void){
 	
@@ -35,6 +33,7 @@ int main(void){
 	unsigned char temp;
 	int in_loop;
 	
+	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   ALWAYS MAKE SURE TO INITIALIZE SysClock and UART FIRST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	System_Clock_Init();
 	UART2_Init();
@@ -45,7 +44,7 @@ int main(void){
 	Start_Timer_Left();
 	Start_Timer_Right();
 	Move_Buffering(5);
-	Change_Width_Left(2000);
+	Change_Width_Left( SMALLEST_WIDTH + DEFAULT_STATE * STEP_INTERVAL );
 	Move_Buffering(5);
 
 
@@ -53,7 +52,7 @@ int main(void){
 			
 			temp = recipe1[i];
 			
-			if ( temp & MOV == MOV ){
+			if ( (temp & MOV) == MOV ){
 				
 				int pulse_width;
 				
@@ -62,12 +61,10 @@ int main(void){
 				pulse_width = SMALLEST_WIDTH + value*STEP_INTERVAL;
 				
 				Change_Width_Left( pulse_width );
-				//if( 0 ){															//check state to calc
-						Move_Buffering(5);
-				//}
+				
 			}
 			
-			else if ( temp & WAIT == WAIT ){
+			else if ( (temp & WAIT) == WAIT ){
 				int delay;
 				temp &= 0x1F;
 				value = temp;
@@ -81,7 +78,7 @@ int main(void){
 				
 			}
 			
-			else if ( temp & LOOP == LOOP ){
+			else if ( (temp & LOOP) == LOOP ){
 				//save current index
 				temp &= 0x1F;
 				times_to_loop = temp;
@@ -96,7 +93,7 @@ int main(void){
 				in_loop = 1;
 			}
 			
-			else if ( temp & END_LOOP == END_LOOP ){
+			else if ( (temp & END_LOOP) == END_LOOP ){
 				//set index to index of the loop
 				//if loop counter is = to value, dont change index
 				
