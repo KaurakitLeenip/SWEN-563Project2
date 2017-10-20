@@ -357,7 +357,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>0</umfTarg>
+            <umfTarg>1</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -366,7 +366,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>.\Objects\Project2.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -433,6 +433,46 @@
               <FileName>Util.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Util.h</FilePath>
+            </File>
+            <File>
+              <FileName>dynamic_array.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\dynamic_array.c</FilePath>
+            </File>
+            <File>
+              <FileName>dynamic_array.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\dynamic_array.h</FilePath>
+            </File>
+            <File>
+              <FileName>state_machine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\state_machine.c</FilePath>
+            </File>
+            <File>
+              <FileName>state_machine.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\state_machine.h</FilePath>
+            </File>
+            <File>
+              <FileName>Commands.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Commands.c</FilePath>
+            </File>
+            <File>
+              <FileName>Commands.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Commands.h</FilePath>
+            </File>
+            <File>
+              <FileName>LED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\LED.c</FilePath>
+            </File>
+            <File>
+              <FileName>LED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\LED.h</FilePath>
             </File>
           </Files>
         </Group>
