@@ -10,21 +10,13 @@
 
 #define SYSTEM_CLK 80   // STM 80MHZ
 
-void Left_Timer_Init( void ) ;
+void Timer_Init( void ) ;
 
-void Right_Timer_Init( void ) ;
+void Start_Timer( void ) ;
 
-void Start_Timer_Left( void ) ;
+void Stop_Timer( void ) ;
 
-void Start_Timer_Right( void ) ;
-
-void Stop_Timer_Left( void ) ;
-
-void Stop_Timer_Right( void ) ;
-
-void Change_Width_Left( int width ) ;
-
-void Change_Width_Right( int width ) ; 
+void Change_Width( int width, int servo ) ;
 
 
 #endif /* TIMER_H */
