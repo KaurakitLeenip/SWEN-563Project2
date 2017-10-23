@@ -102,26 +102,20 @@ void USART_Init (USART_TypeDef * USARTx) {
 }
 
 // call usart_read multiple times based on the characters actually inputted; prob not array
-uint8_t* Read_Line(char * str){
+void Read_Line(char * str){
 	// for all the expected characters in the string, read them all individually; when an 'enter' is found (cr / lb), then stop reading
 	// return what is read in
 	uint8_t input_byte = ' ';
-	uint8_t line[256];
-	uint8_t* ret_string = line;
-	int index = 0;
+	int index = 1;
 	
-	while(1){
+	while( input_byte != '>' ){
 		input_byte = USART_Read(USART2);
-		if( input_byte == 0x0D ){
-			//line[index] = input_byte;
-			line[index] = '\0';
-			return ret_string;
-		}
-		else{
-			line[index] = input_byte;
-			index++;
-		}
-	}		
+		str[index] = input_byte;
+		index++;
+	}
+	
+	str[index++] = '\0';
+	Write_Line("\r\n>");
 }
 
 uint8_t USART_Read (USART_TypeDef * USARTx) {

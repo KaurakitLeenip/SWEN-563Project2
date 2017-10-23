@@ -13,8 +13,10 @@ typedef struct{
 
 int servo_number;
 int override_flag = 0;
+int in_loop = 0;
 enum status program_status = status_running;
-char line[256];
+uint8_t line[256];
+
 char rxByte;
 servo servos[2];
 
@@ -43,6 +45,33 @@ char recipe1[100] =
 
 };
 
+char recipe_loop[100] = {
+	MOV | 0,
+	LOOP | 3,
+	MOV | 4,
+	MOV | 5,
+	0xA0,
+	MOV | 2,
+	RECIPE_END
+	
+};
+
+char recipe_nested[100] = {
+	MOV | 0,
+	LOOP | 2,
+	LOOP | 3,
+	END_LOOP,
+	END_LOOP,
+	RECIPE_END
+};
+
+char recipe_command[100] = {
+	MOV | 0,
+	0xA0,
+	RECIPE_END
+};
+	
+
 void Init_Servos(){
 	int i;
 	for ( i = 0; i < NUM_SERVOS; i++ ){
@@ -55,7 +84,7 @@ void Init_Servos(){
 
 void Move_Buffering( int moves ){
 	
-	int delay = moves * 1000000;
+	int delay = ( moves + 1 ) * 500000;
 	USART_Delay(delay);
 	
 }
@@ -75,45 +104,80 @@ void Move_Buffering( int moves ){
 void Run_State(){
 	
 	//CreateThread( NULL, NULL, overrideCheck, NULL );
+	Write_Line("\r\n>");
 	while( program_status != status_done ){
 		int i;
+		char input[1];
 		
-		if ( USART2->ISR & 0x20 == 0x20 ){
+		if (( USART2->ISR & USART_ISR_RXNE )){
 			//if the RXNE interrupt has been flagged
 			override_flag = 1;
+
+
 		}
 		
-		if ( override_flag == 1 ){
+		if ( override_flag == 1 ){ 
 			program_status = status_input_read;
-			Read_Line(line);
+			rxByte = ((uint8_t)(USART2->RDR & 0xFF));
+			input[0] = rxByte;
+			line[0] = rxByte;
+			Write_Line(input);
 		}
 		
 		 switch( program_status ){
 			
 			case status_input_read:
-				
-				Write_Line("\r\n>");
-				for ( i = 0; i < sizeof(line); i++ ){
-					if (line[i] == 'x' || line[i] == 'X'){
-						servos[0].servo_state = state_running;
-						servos[1].servo_state = state_running;
-						override_flag = 0;
+				Read_Line(line);
+				USART2->RQR |= USART_RQR_RXFRQ;
+				if ( line[6] == '>' ){
+					for ( i = 0; line[i] != '\0'; i++ ){
+						if (line[i] == 'x' || line[i] == 'X'){
+							Write_Line("\r\n>");
+							servos[0].servo_state = state_running;
+							servos[1].servo_state = state_running;
+							override_flag = 0;
+						}
+					}
+						if ( override_flag == 1 ){
+							servos[0].servo_state = state_process_override;
+							servos[1].servo_state = state_process_override;
+						}
 						
 					}
-					else{
-						servos[0].servo_state = state_process_override;
-						servos[1].servo_state = state_process_override;					
-					}
-				}
+				
 				override_flag = 0;
+				program_status = status_running;
 				
 
 			case status_running:
 				
-				Red_LED_Off();
-				Green_LED_Off();
-				Green_LED_On();
-			
+				switch ( servos[0].servo_state ){
+				//LED switches	
+					case state_running:
+						Red_LED_Off();
+						Green_LED_Off();
+						Green_LED_On();
+						break;
+					
+					case state_paused:
+						Red_LED_Off();
+						Green_LED_Off();
+						break;
+					
+					case state_nested_error:
+						Red_LED_Off();
+						Green_LED_Off();
+						Red_LED_On();
+						Green_LED_On();
+						break;
+					
+					case state_command_error:
+						Red_LED_Off();
+						Green_LED_Off();
+						Red_LED_On();
+						break;
+				}
+				
 				for ( servo_number = 0; servo_number < 2; servo_number++ ){
 					if ( servos[servo_number].servo_state == state_running ){
 						process_recipe( servos[servo_number].current_index, servo_number );
@@ -125,12 +189,16 @@ void Run_State(){
 					else if (servos[servo_number].servo_state == state_recipe_end){
 						program_status = status_done;
 					}
+					else if ( USART2->ISR & 0x20 == 0x20 ){
+						//if the RXNE interrupt has been flagged
+						override_flag = 1;
+						line[0] = USART_Read(USART2);
+						}
 					else{
 						//error and pause states do nothing
 					}
 				}
 			case status_done:
-				break;
 
 		}
 	}
@@ -139,19 +207,25 @@ void Run_State(){
 void process_recipe( int index_number, int servo ){
 	
 	unsigned char temp;
-	int in_loop = 0;
 	int value;
+	int opcode;
 	
-	temp = recipe1[servos[servo].current_index];
+	temp = recipe_loop[index_number];
+	opcode = temp >> 5;
+	
 
 	
-	if ( (temp & MOV) == MOV ){
+	if ( opcode == 1 ){
 				
 		int pulse_width;
 		int delay_cycles;
+		int pos;
 				
 		temp &= 0x1F;
 		value = temp;
+		pos = servos[servo].position;
+		servos[servo].position = value;
+		pos = servos[servo].position;
 		pulse_width = SMALLEST_WIDTH + value*STEP_INTERVAL;
 		Change_Width( pulse_width, servo );
 		delay_cycles = abs(servos[servo].position - value);
@@ -159,7 +233,7 @@ void process_recipe( int index_number, int servo ){
 				
 	}
 			
-	else if ( (temp & WAIT) == WAIT ){
+	else if ( opcode == 2 ){
 		
 		int delay;
 		temp &= 0x1F;
@@ -173,12 +247,13 @@ void process_recipe( int index_number, int servo ){
 				
 		}
 			
-	else if ( (temp & LOOP) == LOOP ){
+	else if ( opcode == 4 ){
+
 		//save current index
 		temp &= 0x1F;
 		servos[servo].times_to_loop = temp;
 		servos[servo].loop_start_index = index_number;
-		servos[servo].loop_start_index++; 							
+
 		//the next statements will be looped
 				
 		if( in_loop != 0 ){
@@ -188,7 +263,7 @@ void process_recipe( int index_number, int servo ){
 		in_loop = 1;
 	}
 			
-	else if ( (temp & END_LOOP) == END_LOOP ){
+	else if ( opcode == 5 ){
 		//set index to index of the loop
 		//if loop counter is = to value, dont change index
 		
@@ -207,12 +282,13 @@ void process_recipe( int index_number, int servo ){
 		}
 				
 		else{
-		servos[servo].loop_counter++;
-		index_number = servos[servo].loop_start_index;
+			servos[servo].loop_counter++;
+			servos[servo].current_index = servos[servo].loop_start_index;
+
 		}
 	}
 	
-	else if ( temp == 0 ){
+	else if ( opcode == 0 ){
 		//end of recipe
 		servos[servo].servo_state = state_recipe_end;
 		
@@ -222,10 +298,10 @@ void process_recipe( int index_number, int servo ){
 		//command unrecognized
 		servos[servo].servo_state = state_command_error;
 	}
-
 }
 
 void override_process( char input, int servo ){
+	int p = servos[servo].position;
 	if (input == 'P' || input == 'p'){
 		if (servos[servo].servo_state != state_recipe_end && 
 			servos[servo].servo_state != state_nested_error &&
@@ -273,14 +349,14 @@ void override_process( char input, int servo ){
 
 void Turn_Left( int servo ){
 	int pulse_width;
-	servos[servo].position--;
+	servos[servo].position++;
 	pulse_width = SMALLEST_WIDTH + servos[servo].position*STEP_INTERVAL;
 	Change_Width( pulse_width, servo );
 }
 
 void Turn_Right( int servo ){
 	int pulse_width;
-	servos[servo].position++;
+	servos[servo].position--;
 	pulse_width = SMALLEST_WIDTH + servos[servo].position*STEP_INTERVAL;
 	Change_Width( pulse_width, servo );	
 }

@@ -17,7 +17,7 @@ void USART_Write(USART_TypeDef * USARTx, uint8_t *buffer, uint32_t nBytes);
 uint8_t   USART_Read(USART_TypeDef * USARTx);
 void USART_Delay(uint32_t us);
 void USART_IRQHandler(USART_TypeDef * USARTx, uint8_t *buffer, uint32_t * pRx_counter);
-uint8_t * Read_Line(char * str);
+void Read_Line(char * str);
 void Write_Line(char string[]);
 
 #endif /* __STM32L476G_DISCOVERY_UART_H */

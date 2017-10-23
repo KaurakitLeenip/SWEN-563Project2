@@ -6,6 +6,7 @@
 #include "UART.h"
 #include "LED.h"
 #include "stm32l476xx.h"
+#include <stdlib.h>
 
 #define MOV (0x20)
 #define WAIT (0x40)
@@ -37,10 +38,10 @@ enum status
 		
 } ;
 
-void Init_Servos();
+void Init_Servos( void );
 void Move_Buffering( int moves );
-void * overrideCheck();
-void Run_State();
+void * overrideCheck( void );
+void Run_State( void );
 void process_recipe( int index_number, int servo );
 void override_process( char input, int servo );
 void Turn_Left( int servo );
