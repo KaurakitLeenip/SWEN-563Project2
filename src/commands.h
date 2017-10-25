@@ -23,7 +23,6 @@ enum servo_states
 		
 	state_paused,
 	state_running,
-	state_process_override,
 	state_command_error,
 	state_nested_error,
 	state_recipe_end
@@ -38,9 +37,20 @@ enum status
 		
 } ;
 
+typedef struct{
+	enum servo_states servo_state;
+	
+	int current_index;
+	int loop_start_index;
+	int loop_counter;
+	int times_to_loop;
+	int position;
+	
+}	servo;
+
 void Init_Servos( void );
 void Move_Buffering( int moves );
-void * overrideCheck( void );
+void Update_LEDs( void );
 void Run_State( void );
 void process_recipe( int index_number, int servo );
 void override_process( char input, int servo );
