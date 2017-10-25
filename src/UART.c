@@ -109,7 +109,7 @@ void Read_Line(char * str){
 	int index = 1;
 	//index here is 1 as the first character is read using USART_Read as it trips the RXNE flag
 	
-	while( input_byte != '>' || input_byte != 'x' || input_byte != 'X'){
+	while( input_byte != '>' ){
 		input_byte = USART_Read(USART2);
 		str[index] = input_byte;
 		index++;
