@@ -132,6 +132,12 @@ void Run_State(){
 			//as the input is 1 char, it needs to be added to the start of the input
 			program_status = status_input_read;
 			rxByte = ((uint8_t)(USART2->RDR & 0xFF));
+			if (  rxByte != 'x' || rxByte != 'X' ){
+				//if the first character is an x, override canceled
+				program_status = status_running;
+				override_flag = 0;
+				Write_Line("\r\n>");
+			}
 			input[0] = rxByte;
 			line[0] = rxByte;
 			Write_Line(input);
@@ -142,7 +148,7 @@ void Run_State(){
 			case status_input_read:
 				//read in override input and handle it
 				Read_Line(line);
-				USART2->RQR |= USART_RQR_RXFRQ;
+				//USART2->RQR |= USART_RQR_RXFRQ;
 				//clear interrupt flag
 			
 				if ( line[6] == '>' ){
@@ -193,7 +199,7 @@ void Run_State(){
 						}
 					}
 					
-					else if ( USART2->ISR & 0x20 == 0x20 ){
+					else if ( USART2->ISR == USART_ISR_RXNE ){
 						//if the RXNE interrupt has been flagged, user has input something
 						override_flag = 1;
 						line[0] = USART_Read(USART2);
