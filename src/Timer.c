@@ -18,19 +18,18 @@ void Timer_Init( void ) {
   GPIOA->AFR[0] |= 0x10;
 	RCC->APB1ENR1 |= RCC_APB1ENR1_TIM2EN;   		// TIM2 timer clock enable
 
-  TIM2->PSC = 100;				        						// set prescale to 80 us per count
+  TIM2->PSC = 100;				        						// set prescale to 100 us per count
   TIM2->EGR |= TIM_EGR_UG;										// set the update generation bit; see RM for more info, but forces an update of the register
 
 	TIM2->CCMR1 &= ~0x303;
   TIM2->CCMR1 |= 0x68;                    		// setup channel for output compare 1 preload, enable PWN mode 1
 	TIM2->CCMR1 |= 0x6800;
-	//TIM2->CCMR1 &= 0xFC;												// set CCMR to be output
 	TIM2->CR1 |= 0x80;													// Enable auto-reload preload enable
 	TIM2->CCER |= 0x01;													// enable channel 1 output bit
 	TIM2->CCER |= 0x10;
 
 	TIM2->ARR = 0x4E20;													// set the period of the PWN to 2000 
-	TIM2->CCR1 = 1360;													// set the width of the pwn to 400
+	TIM2->CCR1 = 1360;													// set the width of the pwn to 1360 (position 3)
 	TIM2->CCR2 = 1360;
 	
   TIM2->EGR |= TIM_EGR_UG;				// set the update generation bit; see RM for more info, but forces an update of the register

@@ -111,6 +111,9 @@ void Read_Line(char * str){
 	
 	while( input_byte != '>' ){
 		input_byte = USART_Read(USART2);
+		if ( input_byte == 'x' || input_byte == 'X' ){
+			break;
+		}
 		str[index] = input_byte;
 		index++;
 	}

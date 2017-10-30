@@ -32,8 +32,6 @@ int main(void){
 	//Change_Width(2000,1);
 	//Change_Width(2000,0);
 	Move_Buffering(5);
-	//Change_Width(400,1);
-	//Change_Width(400,0);
 	Run_State();
 
 

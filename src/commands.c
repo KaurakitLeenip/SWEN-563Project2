@@ -2,7 +2,7 @@
 
 int servo_number;
 int override_flag = 0;
-int in_loop = 0;
+int in_loop[2] = {0, 0};
 enum status program_status = status_running;
 char line[256];
 char output[50];
@@ -35,6 +35,28 @@ char recipe1[100] =
 
 };
 
+char recipe_ascend[100] = 
+{
+	MOV | 0, 
+	MOV | 1, 
+	MOV | 2,
+	MOV | 3,
+	MOV | 4, 
+	MOV | 5,
+	RECIPE_END
+};
+
+char recipe_descend[100] = 
+{
+	MOV | 5, 
+	MOV | 4, 
+	MOV | 3,
+	MOV | 2,
+	MOV | 1, 
+	MOV | 0,
+	RECIPE_END
+};
+
 char recipe_loop[100] = {
 	MOV | 0,
 	LOOP | 3,
@@ -63,18 +85,22 @@ char recipe_command[100] = {
 	
 
 void Init_Servos(){
+	//will run through both servos and setting the default values for both
 	int i;
 	for ( i = 0; i < NUM_SERVOS; i++ ){
-		servos[i].servo_state = state_running; //OVERRIDE DEBUG MODE
+		servos[i].servo_state = state_running; 
 		servos[i].current_index = 0;
 		servos[i].loop_counter = 0; 
-		servos[i].position = 3;
+		servos[i].position = DEFAULT_STATE;
 	}
 }
 
 void Move_Buffering( int moves ){
 	
-	int delay = ( moves + 1 ) * 500000;
+	long delay = ( moves ) * 400000;
+	// set delay of 400ms per movement to microseconds 
+	//	sprintf(output, "waiting %lu \r\n", delay);
+	//	Write_Line(output);
 	USART_Delay( delay );
 	
 }
@@ -213,7 +239,14 @@ void process_recipe( int index_number, int servo ){
 	int value;
 	int opcode;
 	
-	temp = recipe_loop[index_number];
+	if ( servo == 0 ){
+		temp = recipe1[index_number];
+	}
+	else if ( servo == 1 ){
+	
+		temp = recipe_ascend[index_number];
+	}
+		
 	opcode = temp >> 5;
 	//shifting the recipe 5 bits to get just the opcode
 	
@@ -225,13 +258,15 @@ void process_recipe( int index_number, int servo ){
 		temp &= 0x1F;
 		//clearing the opcode to get just the value
 		value = temp;
+		delay_cycles = abs(servos[servo].position - value);
 		servos[servo].position = value;
 		//	sprintf(output, "moving servo %d to %d\r\n", servo, servos[servo].position);
 		//	Write_Line(output);
 		pulse_width = SMALLEST_WIDTH + value*STEP_INTERVAL;
 		
 		Change_Width( pulse_width, servo );
-		delay_cycles = abs(servos[servo].position - value);
+		//	sprintf(output, "servo moving %d positions\r\n", delay_cycles);
+		//	Write_Line(output);
 		//caluculate the difference in positions to set delay
 		Move_Buffering(delay_cycles);
 				
@@ -239,14 +274,14 @@ void process_recipe( int index_number, int servo ){
 			
 	else if ( opcode == 2 ){
 		//WAIT opcode
-		int delay;
+		long delay;
 		temp &= 0x1F;
 		value = temp;
 
 		value++;																
 		//wait 0 is a wait of 1 cycle so the value must be adjusted
 				
-		delay = value*500000;
+		delay = value*100000;
 		USART_Delay(delay);
 				
 		}
@@ -258,11 +293,11 @@ void process_recipe( int index_number, int servo ){
 		servos[servo].times_to_loop = temp;
 		servos[servo].loop_start_index = index_number;
 			
-		if( in_loop != 0 ){
+		if( in_loop[servo] != 0 ){
 		//NESTED_LOOP_ERROR: BOTH RED AND GREEN LEDS ON
 			servos[servo].servo_state = state_nested_error;	
 		}
-		in_loop = 1;
+		in_loop[servo] = 1;
 	}
 			
 	else if ( opcode == 5 ){
@@ -270,7 +305,7 @@ void process_recipe( int index_number, int servo ){
 		//set index to index of the loop
 		//if loop counter is = to value, dont change index
 		
-		if ( !in_loop ){
+		if ( !in_loop[servo] ){
 			//the recipe is bad. there is an END_LOOP before a START_LOOP
 			//nested error
 			servos[servo].servo_state = state_nested_error;
@@ -280,7 +315,7 @@ void process_recipe( int index_number, int servo ){
 			//if loop_counter is equal to times_to_loop
 			//it has reached the number of times to loop
 			//turn off the in loop flag
-			in_loop = 0;
+			in_loop[servo] = 0;
 		}
 				
 		else{
